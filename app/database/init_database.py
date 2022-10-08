@@ -9,13 +9,13 @@ from app.database import Base, Session
 
 
 def init_database():
-    if not database_exists(settings.sqlalchemy_database_uri):
-        create_database(settings.sqlalchemy_database_uri)
+    if not database_exists(settings.db_uri):
+        create_database(settings.db_uri)
     elif settings.dev_mode and settings.drop_db:
-        drop_database(settings.sqlalchemy_database_uri)
-        create_database(settings.sqlalchemy_database_uri)
+        drop_database(settings.db_uri)
+        create_database(settings.db_uri)
 
-    engine = create_engine(settings.sqlalchemy_database_uri)
+    engine = create_engine(settings.db_uri)
     Session.configure(bind=engine)
     Base.metadata.create_all(engine)
     return
