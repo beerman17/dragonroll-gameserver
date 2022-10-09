@@ -12,10 +12,7 @@ from app.models.user import User
 from app.api.endpoints import character_errors as error_details
 
 
-router = APIRouter(
-    prefix='/characters',
-    tags=['characters']
-)
+router = APIRouter()
 
 
 @router.get('/', response_model=list[CharacterSchema])

@@ -18,10 +18,7 @@ from app.models.user import User
 from app.api.endpoints import game_errors as error_details
 
 
-router = APIRouter(
-    prefix='/games',
-    tags=['games']
-)
+router = APIRouter()
 
 
 @router.get('/', response_model=list[GameSchema])
@@ -95,7 +92,7 @@ def create_join_request(
             raise HTTPException(status_code=400, detail=error_details.CHARACTER_ALREADY_USED)
 
 
-@router.get('/games/{game_id}/join_requests', response_model=list[JoinRequestSchema])
+@router.get('/{game_id}/join_requests', response_model=list[JoinRequestSchema])
 def get_join_requests(
         game_id: int,
         current_user: User = Depends(get_current_user),
@@ -108,7 +105,7 @@ def get_join_requests(
         return crud.get_join_requests(db, game_id)
 
 
-@router.get('/games/{game_id}/join_requests/{request_id}/accept')
+@router.get('/{game_id}/join_requests/{request_id}/accept')
 def accept_join_request(
         game_id: int,
         request_id: int,
@@ -122,7 +119,7 @@ def accept_join_request(
         crud.join_request_accept(db, request_id)
 
 
-@router.get('/games/{game_id}/join_requests/{request_id}/decline')
+@router.get('/{game_id}/join_requests/{request_id}/decline')
 def decline_join_request(
         game_id: int,
         request_id: int,
