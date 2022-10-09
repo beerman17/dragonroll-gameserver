@@ -14,7 +14,7 @@ class GameBase(BaseModel):
 
 
 class GameCreateSchema(GameBase):
-    game_master_id: int
+    pass
 
 
 class GameUpdateSchema(GameBase):
