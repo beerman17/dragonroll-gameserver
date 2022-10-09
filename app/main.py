@@ -28,5 +28,5 @@ app.add_middleware(
 async def root():
     return {
         'app_name': settings.app_name,
-        'sqlalchemy_uri': settings.sqlalchemy_database_uri
+        'sqlalchemy_uri': settings.db_uri
     }
