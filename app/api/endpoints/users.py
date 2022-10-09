@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user import UserSchema, UserCreateSchema, UserUpdateSchema
 from app.api.dependencies import get_db, get_current_user
 from app.crud import user as crud
-
+from app.api.endpoints import error_details
 
 router = APIRouter()
 
@@ -36,6 +36,7 @@ def get_current_user_info(current_user=Depends(get_current_user)):
     #     raise HTTPException(status_code=404)
     # else:
     #     return user
+    return
 
 
 @router.get('/{user_id}', response_model=UserSchema)
@@ -58,10 +59,13 @@ def update(user_id: int, user: UserUpdateSchema, db: Session = Depends(get_db)):
         return user
 
 
-@router.post('/', response_model=UserSchema)
+@router.post('/', response_model=UserSchema, status_code=201)
 def create(user: UserCreateSchema, db: Session = Depends(get_db)):
     """Create new user"""
-    return crud.create_user(db, user)
+    try:
+        return crud.create_user(db, user)
+    except crud.UsernameNotUnique:
+        raise HTTPException(status_code=400, detail=error_details.USERNAME_IS_NOT_UNIQUE)
 
 
 @router.delete('/{user_id}')
