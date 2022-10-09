@@ -3,10 +3,11 @@ CRUD operations for Characters
 """
 
 from typing import Union
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
-from ..models.character import Character
-from ..schemas.character import CharacterCreateSchema, CharacterUpdateSchema
+from app.models.character import Character
+from app.schemas.character import CharacterCreateSchema, CharacterUpdateSchema
 
 
 def get_characters(db: Session,
@@ -41,6 +42,24 @@ def get_character_by_id(db: Session, character_id: int) -> Union[Character, None
     :return:
     """
     character = db.get(Character, character_id)
+    if character:
+        return character
+    else:
+        return None
+
+
+def get_user_character_by_id(db: Session, user_id: int, character_id: int) -> Union[Character, None]:
+    """
+    Get character by id filtered by user owner id
+    :param db:
+    :param user_id: character owner id
+    :param character_id:
+    :return:
+    """
+    character = db.query(Character).filter(and_(
+        Character.user_owner_id == user_id,
+        Character.character_id == character_id
+    )).first()
     if character:
         return character
     else:
