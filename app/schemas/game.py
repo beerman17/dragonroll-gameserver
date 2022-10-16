@@ -19,12 +19,14 @@ class GameCreateSchema(GameBase):
 
 class GameUpdateSchema(GameBase):
     game_state: Optional[bool]
+    disabled: Optional[bool]
 
 
 class GameSchema(GameBase):
     game_id: int
     game_master_id: int
     game_state: Optional[bool]
+    disabled: Optional[bool]
     created_at: datetime.datetime
     updated_at: datetime.datetime
 

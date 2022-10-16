@@ -18,6 +18,7 @@ class Game(Base):
     game_id = Column(Integer, primary_key=True)
     game_master_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
     game_state = Column(Boolean, default=True)
+    disabled = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
