@@ -118,3 +118,23 @@ def disable_user(db: Session, user_id: int) -> Union[None, bool]:
         except:
             # todo: need to log exception in disable_item
             return False
+
+
+def enable_user(db: Session, user_id: int) -> Union[None, bool]:
+    """
+    Disable user by id
+    :param db:
+    :param user_id:
+    :return:
+    """
+    user = db.get(User, user_id)
+    if user is None:
+        return None
+    else:
+        try:
+            user.disabled = False
+            db.commit()
+            return True
+        except:
+            # todo: need to log exception in disable_item
+            return False
