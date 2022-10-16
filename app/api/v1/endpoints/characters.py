@@ -6,10 +6,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.character import CharacterSchema, CharacterCreateSchema, CharacterUpdateSchema
-from app.api.dependencies import get_db, get_current_user
+from app.api.v1.dependencies import get_db, get_current_user
 from app.crud import character as crud
 from app.models.user import User
-from app.api.endpoints import character_errors as error_details
+from app.api.v1.endpoints import character_errors as error_details
 
 
 router = APIRouter()
@@ -41,11 +41,7 @@ def update(character_id: int,
     if not current_user.owns_character(character_id):
         raise HTTPException(status_code=404, detail=error_details.CHARACTER_NOT_FOUND)
     # update the character
-    character = crud.update_character(db, character_id, character)
-    if character is None:
-        raise HTTPException(status_code=404, detail=error_details.CHARACTER_NOT_FOUND)
-    else:
-        return character
+    return crud.update_character(db, character_id, character)
 
 
 @router.post('/', response_model=CharacterSchema, status_code=201)
@@ -64,6 +60,4 @@ def delete(character_id: int,
     # check if the user owns the character
     if not current_user.owns_character(character_id):
         raise HTTPException(status_code=404, detail=error_details.CHARACTER_NOT_FOUND)
-    response = crud.disable_character(db, character_id)
-    if response is None:
-        raise HTTPException(status_code=404)
+    crud.disable_character(db, character_id)

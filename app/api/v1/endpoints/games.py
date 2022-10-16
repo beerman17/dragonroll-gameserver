@@ -9,13 +9,13 @@ from app.schemas.game import (
     GameSchema, GameCreateSchema, GameUpdateSchema, JoinRequestCreateSchema,
     JoinRequestSchema
 )
-from app.api.dependencies import get_db, get_current_user
+from app.api.v1.dependencies import get_db, get_current_user
 from app.crud import game as crud
 from app.crud import (
     CharacterUnavailable
 )
 from app.models.user import User
-from app.api.endpoints import game_errors as error_details
+from app.api.v1.endpoints import game_errors as error_details
 
 
 router = APIRouter()

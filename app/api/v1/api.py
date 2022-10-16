@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import adventures, characters, games, items, users
-
+from app.api.v1.endpoints import characters, games, users
 
 api_router = APIRouter()
 
