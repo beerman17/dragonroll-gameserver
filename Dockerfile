@@ -1,4 +1,4 @@
-FROM python:3.9-slim as base
+FROM python:3.10-slim as base
 
 RUN apt-get update && \
     apt-get install -y libpq-dev gcc
@@ -12,7 +12,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir --upgrade -r requirements.txt
 
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 RUN apt-get update && \
     apt-get install -y libpq5
