@@ -39,3 +39,14 @@ class User(Base):
             return True
         else:
             return False
+
+    def owns_character(self, character_id: int) -> bool:
+        """
+        Check if the user owns the character with specified id
+        :param character_id:
+        :return:
+        """
+        if character_id in [char.character_id for char in self.characters]:
+            return True
+        else:
+            return False

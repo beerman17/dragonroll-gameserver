@@ -49,14 +49,15 @@ def get_game_by_id(db: Session, game_id: int) -> Union[Game, None]:
         return None
 
 
-def create_game(db: Session, game: GameCreateSchema) -> Game:
+def create_game(db: Session, game: GameCreateSchema, game_master_id: int) -> Game:
     """
     Create new game
     :param db:
     :param game:
+    :param game_master_id: the user who created the game
     :return:
     """
-    new_game = Game(**game.dict(exclude_unset=True))
+    new_game = Game(game_master_id=game_master_id, **game.dict(exclude_unset=True))
     db.add(new_game)
     db.commit()
     db.refresh(new_game)

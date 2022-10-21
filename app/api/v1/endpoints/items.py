@@ -6,14 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.item import ItemSchema, ItemCreateSchema, ItemUpdateSchema
-from app.api.dependencies import get_db
+from app.api.v1.dependencies import get_db
 from app.crud import item as crud
 
 
-router = APIRouter(
-    prefix='/items',
-    tags=['items']
-)
+router = APIRouter()
 
 
 @router.get('/', response_model=list[ItemSchema])

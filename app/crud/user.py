@@ -10,6 +10,10 @@ from app.models.user import User
 from app.schemas.user import UserCreateSchema, UserUpdateSchema
 
 
+class UsernameNotUnique(Exception):
+    pass
+
+
 def get_users(db: Session,
               q: str = None,
               offset: int = 0,
@@ -67,11 +71,15 @@ def create_user(db: Session, user: UserCreateSchema) -> User:
     :param user:
     :return:
     """
-    new_user = User(**user.dict(exclude_unset=True))
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
+    # check if username is unique
+    if db.query(User).filter(User.username == user.username).first() is not None:
+        raise UsernameNotUnique
+    else:
+        new_user = User(**user.dict(exclude_unset=True))
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return new_user
 
 
 def update_user(db: Session, user_id: int, user: UserUpdateSchema) -> Union[User, None]:
@@ -105,6 +113,26 @@ def disable_user(db: Session, user_id: int) -> Union[None, bool]:
     else:
         try:
             user.disabled = True
+            db.commit()
+            return True
+        except:
+            # todo: need to log exception in disable_item
+            return False
+
+
+def enable_user(db: Session, user_id: int) -> Union[None, bool]:
+    """
+    Disable user by id
+    :param db:
+    :param user_id:
+    :return:
+    """
+    user = db.get(User, user_id)
+    if user is None:
+        return None
+    else:
+        try:
+            user.disabled = False
             db.commit()
             return True
         except:

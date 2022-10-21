@@ -13,7 +13,8 @@ class UserCreateSchema(UserBase):
     password: Optional[str]
 
 
-class UserUpdateSchema(UserBase):
+class UserUpdateSchema(BaseModel):
+    nickname: Optional[str]
     password: Optional[str]
     disabled: Optional[bool]
 

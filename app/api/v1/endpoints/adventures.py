@@ -6,19 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.adventure import AdventureUpdateSchema, AdventureCreateSchema, AdventureSchema
-from app.api.dependencies import get_db
+from app.api.v1.dependencies import get_db
 from app.crud import adventure as crud
 
 
-router = APIRouter(
-    prefix='/adventures',
-    tags=['adventures'],
-    responses={
-        404: {
-            'description': 'Adventure not found'
-        }
-    }
-)
+router = APIRouter()
 
 
 @router.get('/', response_model=list[AdventureSchema])
